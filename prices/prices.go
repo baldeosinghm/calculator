@@ -13,7 +13,7 @@ Struct contains the tax rates, prices, and resulting tax-included prices.
 This struct should be called whenever we want to calculate a new price based
 on a tax.  The tax rates and input prices should be read from a text file.
 
-# Uppercase type and key to make available for import
+# Capitalize type and key to make available for import
 
 The type for IOManager was switched from filemanager.FileManager to iomanager.IOManager
 to allow CMDManager's methods to pass as acceptable parameters.
