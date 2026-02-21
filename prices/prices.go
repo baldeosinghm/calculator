@@ -47,11 +47,13 @@ func (job *TaxIncludedPriceJob) LoadData() error {
 
 // METHOD
 // Calculates tax-included price based on tax rate and input prices found in TaxIncludedPriceJob.
-func (job *TaxIncludedPriceJob) Process(doneChan chan bool) {
+func (job *TaxIncludedPriceJob) Process(doneChan chan bool, errorChan chan error) {
 	err := job.LoadData()
 
 	if err != nil {
 		// return err
+		errorChan <- err
+		return
 	}
 
 	result := make(map[string]string)
