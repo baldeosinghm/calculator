@@ -47,11 +47,11 @@ func (job *TaxIncludedPriceJob) LoadData() error {
 
 // METHOD
 // Calculates tax-included price based on tax rate and input prices found in TaxIncludedPriceJob.
-func (job *TaxIncludedPriceJob) Process() error {
+func (job *TaxIncludedPriceJob) Process(doneChan chan bool) {
 	err := job.LoadData()
 
 	if err != nil {
-		return err
+		// return err
 	}
 
 	result := make(map[string]string)
@@ -62,7 +62,8 @@ func (job *TaxIncludedPriceJob) Process() error {
 	}
 
 	job.TaxIncludedPrices = result
-	return job.IOManager.WriteResult(job)
+	job.IOManager.WriteResult(job)
+	doneChan <- true
 }
 
 // Constructor creates new job for each set of tax rates.
