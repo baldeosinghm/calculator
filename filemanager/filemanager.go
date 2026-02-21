@@ -20,6 +20,12 @@ func (fm FileManager) ReadLines() ([]string, error) {
 		return nil, errors.New("Failed to open file.")
 	}
 
+	// The "defer" keyword ensures a method only runs when the surrounding function
+	// is done. Saves us trouble of manually writing file.Close() in multiple places.
+
+	// Only close file if function executes
+	defer file.Close()
+
 	// The bufio package provides utility functions for dealing w/ input and output data
 	scanner := bufio.NewScanner(file)
 
@@ -32,11 +38,11 @@ func (fm FileManager) ReadLines() ([]string, error) {
 	err = scanner.Err()
 
 	if err != nil {
-		file.Close()
+		// file.Close() Comment out manual file closes
 		return nil, errors.New("Failed to read line in file.")
 	}
 
-	file.Close()
+	// file.Close()
 	return lines, nil
 }
 
@@ -48,16 +54,19 @@ func (fm FileManager) WriteResult(data any) error {
 		return errors.New("Failed to create file.")
 	}
 
+	// Only close file if function executes
+	defer file.Close()
+
 	// JSON package, NewEncoder() that converts data into JSON format
 	encoder := json.NewEncoder(file)
 	err = encoder.Encode(data)
 
 	if err != nil {
-		file.Close()
+		// file.Close()
 		return errors.New("Failed to convert data to JSON.")
 	}
 
-	file.Close()
+	// file.Close()
 	return nil
 }
 
